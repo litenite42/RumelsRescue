@@ -55,7 +55,7 @@ function gameUpdate() {
 
     const colors = Object.getOwnPropertyNames(_FOTL.palette);
 
-    if (frame % 16) {
+    if (frame % 99 == 0) {
       _FOTL.score++;
     }
     if (frame % 256 == 0) {
@@ -78,12 +78,7 @@ function gameRender() {
     let x = mainCanvasSize.x / 2;
     let y = -1 * mainCanvasSize.y / 2
 
-    if (_FOTL.bgColor !== _FOTL.palette.white) 
-  {
-  debugger;
-  }
     drawRect(cameraPos, mainCanvasSize.scale(.8), _FOTL.bgColor);
-    //drawRect(cameraPos, (199, 199), _FOTL.palette.green);
     drawRect(cameraPos, vec2(mainCanvasSize.x,19), _FOTL.palette.white);
 }
 
@@ -91,7 +86,8 @@ function gameRender() {
 function gameRenderPost() {
     // called after objects are rendered
     // draw effects or hud that appear above all objects
-    // drawTextScreen('Hello World!', mainCanvasSize.scale(.3), 80);
+    drawTextScreen('Flight Of The Lemur', vec2(164, 20), 24, new Color().setHex('#000000'));
+    drawTextScreen('Score: ' + _FOTL.score, vec2(564, 20), 24, new Color().setHex('#000000'));
 }
 
 ///////////////////////////////////////////////////////////////////////////////
