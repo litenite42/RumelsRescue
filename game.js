@@ -6,63 +6,92 @@
 
 'use strict';
 
-let _FOTL = {};
+const _FOTL = (() => {
+    const palette = {
+        red: new Color().setHex('#ff0000'),
+        green: new Color().setHex('#009342'),
+        white: new Color().setHex('#ffffff')
+    };
+
+    return {
+        palette: palette,
+        bgColor: palette.white,
+      score: 0
+    };
+})();
+
 gravity = 0;
+
 ///////////////////////////////////////////////////////////////////////////////
-function gameInit()
-{
+function gameInit() {
     // called once after the engine starts up
     // setup the game
-    
-    _FOTL.player = new EngineObject(vec2(0, 0), vec2(2,1));
+
+    _FOTL.player = new EngineObject(vec2(0, 0), vec2(2, 1));
     _FOTL.player.color = (new Color).setHex('#bbbbbb');
     _FOTL.player.gravityScale = .003;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-function gameUpdate()
-{
+function gameUpdate() {
     // called every frame at 60 frames per second
     // handle input and update the game state
     let y = _FOTL.player.pos.y;
 
     const adjustment = 1.5 * _FOTL.player.size.y;
-    const minVal = -8;
-    const maxVal = 8;
+    const minVal = -9;
+    const maxVal = 9;
     const range = maxVal - minVal;
 
     const step = range / 60;
-    const sign = (keyIsDown('KeyW') || keyIsDown('ArrowUp')) ? 1 : -1;
-    
+    const sign = (keyIsDown('KeyW') || keyIsDown('ArrowUp')) ? 1.2 : -1;
+
     y += sign * step;
 
     if (y > maxVal) y = maxVal;
     else if (y <= minVal) y = minVal;
 
     _FOTL.player.pos.y = y;
+
+    const colors = Object.getOwnPropertyNames(_FOTL.palette);
+
+    if (frame % 16) {
+      _FOTL.score++;
+    }
+    if (frame % 256 == 0) {
+      const ndx = randInt(0, colors.length);
+
+      _FOTL.bgColor = _FOTL.palette[colors[ndx]];
+    }
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-function gameUpdatePost()
-{
+function gameUpdatePost() {
     // called after physics and objects are updated
     // setup camera and prepare for render
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-function gameRender()
-{
+function gameRender() {
     // called before objects are rendered
     // draw any background effects that appear behind objects
-  //
+    let x = mainCanvasSize.x / 2;
+    let y = -1 * mainCanvasSize.y / 2
+
+    if (_FOTL.bgColor !== _FOTL.palette.white) 
+  {
+  debugger;
+  }
+    drawRect(cameraPos, mainCanvasSize.scale(.8), _FOTL.bgColor);
+    //drawRect(cameraPos, (199, 199), _FOTL.palette.green);
+    drawRect(cameraPos, vec2(mainCanvasSize.x,19), _FOTL.palette.white);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-function gameRenderPost()
-{
+function gameRenderPost() {
     // called after objects are rendered
     // draw effects or hud that appear above all objects
-    drawTextScreen('Hello World!', mainCanvasSize.scale(.3), 80);
+    // drawTextScreen('Hello World!', mainCanvasSize.scale(.3), 80);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
