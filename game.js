@@ -51,7 +51,7 @@ function gameInit() {
   // setup the game
   _FOTL.player = new Player(levelSize);
 
-  _FOTL.vehicleManager = new VehicleFactory({
+  _FOTL.vehicleFactory = new VehicleFactory({
     difficulty : _FOTL.currentDifficulty
   });
 }
@@ -62,8 +62,10 @@ function gameUpdate() {
     window.location.reload();
   }
 
-  if (_FOTL.currentState == _FOTL.states.gameOver) {
+  if (_FOTL.currentState == _FOTL.states.gameOver) 
+  {
     engineObjectsDestroy();
+
     return;
   }
 
@@ -73,10 +75,8 @@ function gameUpdate() {
     return;
   }
   
-  if (_FOTL.currentState === _FOTL.states.paused) { return; }
+  if (_FOTL.currentState === _FOTL.states.paused) return;
 
-  // called every frame at 60 frames per second
-  // handle input and update the game state
   const colors = Object.getOwnPropertyNames(_FOTL.palette);
 
   if (frame % 99 == 0) {
@@ -91,9 +91,7 @@ function gameUpdate() {
 
   const pipeSpawn = randInt(118, 228);
   if (frame % pipeSpawn == 0) {
-    _FOTL.vehicleManager.New();
-    //new Vehicle(.4, .7);
-    //EasyVehicle.New();
+    _FOTL.vehicleFactory.New();
   }
 }
 

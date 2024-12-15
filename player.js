@@ -19,7 +19,7 @@ class Player extends EngineObject {
 
     let y = this.pos.y;
 
-    const adjustment = 1.5 * this.size.y;
+    const adjustment = 1.1 * this.size.y;
     const minVal = 1;
     const maxVal = 19;
     const range = maxVal - minVal;
