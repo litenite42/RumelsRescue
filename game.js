@@ -39,6 +39,10 @@ const _FOTL = (() => {
   };
 })();
 
+function isPaused() {
+  return [_FOTL.states.paused, _FOTL.states.menu].includes(_FOTL.currentState);
+}
+
 const levelSize = vec2(38, 20); // size of play area
 setCanvasFixedSize(vec2(1280, 720)); // use a 720p fixed size canvas
 setCameraPos(levelSize.scale(0.5)); // center camera in level
@@ -49,11 +53,14 @@ gravity = 0;
 function gameInit() {
   // called once after the engine starts up
   // setup the game
+  initUISystem();
   _FOTL.player = new Player(levelSize);
 
   _FOTL.vehicleFactory = new VehicleFactory({
     difficulty : _FOTL.currentDifficulty
   });
+
+  _FOTL.uiManager = new uiManager();
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -69,13 +76,19 @@ function gameUpdate() {
     return;
   }
 
+  if (keyWasPressed('KeyM')) {
+    _FOTL.uiManager.toggleVisibility();
+
+    _FOTL.currentState = _FOTL.currentState !== _FOTL.states.menu ? _FOTL.states.menu : _FOTL.states.running;
+  }
+
   if (keyWasPressed('KeyP')) {
     _FOTL.currentState = _FOTL.currentState == _FOTL.states.paused ? _FOTL.states.running : _FOTL.states.paused;
 
     return;
   }
   
-  if (_FOTL.currentState === _FOTL.states.paused) return;
+  if (isPaused()) return;
 
   const colors = Object.getOwnPropertyNames(_FOTL.palette);
 

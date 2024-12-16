@@ -1,6 +1,6 @@
 class VehicleFactory {
   #difficulty;
-   
+  #lastLane;
   constructor(settings) {
     let {difficulty} = {...settings};
 
@@ -19,15 +19,21 @@ class VehicleFactory {
     } else if (this.#difficulty === _FOTL.difficulties.hard) {
       spawnPoints = spawnPoints.map(i => i - 2);
     }
+
+        const quads = [4, 9, 14, 19];
+        
+        const randNdx = randInt(4);
+        const selectedQuad = quads[randNdx];
+
       
     if (vehicleRand < spawnPoints[0]) {
-      new EasyVehicle();
+      new EasyVehicle(selectedQuad);
     }
     else if (vehicleRand < spawnPoints[1]) {
-      new MediumVehicle();
+      new MediumVehicle(selectedQuad);
     } 
     else {
-      new HardVehicle();
+      new HardVehicle(selectedQuad);
     }
   } 
 }

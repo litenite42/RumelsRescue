@@ -15,7 +15,7 @@ class Player extends EngineObject {
   }
 
   update() {
-    if (_FOTL.currentState === _FOTL.states.paused) return;
+    if (isPaused()) return;
 
     let y = this.pos.y;
 
