@@ -15,11 +15,12 @@ const _FOTL = (() => {
 
   const states = {
     menu: 0,
-    running: 1,
-    paused: 2,
-    crashed: 3,
-    spinOut: 4,
-    gameOver: -1
+    intro: 10,
+    running: 100,
+    paused: 200,
+    crashed: 300,
+    spinOut: 400,
+    gameOver: -100
   };
 
   const difficulties = {
@@ -53,18 +54,17 @@ gravity = 0;
 function gameInit() {
   // called once after the engine starts up
   // setup the game
-  initUISystem();
   _FOTL.player = new Player(levelSize);
-
-  _FOTL.vehicleFactory = new VehicleFactory({
-    difficulty : _FOTL.currentDifficulty
-  });
 
   _FOTL.uiManager = new uiManager();
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 function gameUpdate() {
+  if (_FOTL.currentState === _FOTL.states.intro) {
+    return;
+  }
+
   if (keyWasPressed('KeyR')) {
     window.location.reload();
   }
@@ -146,6 +146,7 @@ function gameRenderPost() {
     );
     return;
   }
+
   if (_FOTL.currentState === _FOTL.states.paused){
     drawTextScreen(
       "Paused\n[P to unpause]",

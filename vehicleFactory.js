@@ -15,15 +15,15 @@ class VehicleFactory {
     let spawnPoints = [9, 15];
     
     if (this.#difficulty === _FOTL.difficulties.medium) {
-      spawnPoints = spawnPoints.map(i => i - 1)
+      spawnPoints = spawnPoints.map(i => i - 1);
     } else if (this.#difficulty === _FOTL.difficulties.hard) {
       spawnPoints = spawnPoints.map(i => i - 2);
     }
 
-        const quads = [4, 9, 14, 19];
+    const quads = [4, 9, 14, 19];
         
-        const randNdx = randInt(4);
-        const selectedQuad = quads[randNdx];
+    const randNdx = randInt(4);
+    const selectedQuad = quads[randNdx];
 
       
     if (vehicleRand < spawnPoints[0]) {
