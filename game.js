@@ -41,7 +41,7 @@ const _FOTL = (() => {
 })();
 
 function isPaused() {
-  return [_FOTL.states.paused, _FOTL.states.menu].includes(_FOTL.currentState);
+  return [_FOTL.states.paused, _FOTL.states.menu, _FOTL.states.intro].includes(_FOTL.currentState);
 }
 
 const levelSize = vec2(38, 20); // size of play area
@@ -63,6 +63,10 @@ function gameInit() {
 function gameUpdate() {
   if (_FOTL.currentState === _FOTL.states.intro) {
     return;
+  }
+
+  if (!_FOTL.vehicleFactory) {
+    _FOTL.vehicleFactory = new VehicleFactory({difficulty : _FOTL.uiManager.difficulty});
   }
 
   if (keyWasPressed('KeyR')) {

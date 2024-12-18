@@ -16,14 +16,20 @@ section.menus {
   background: white;
   border: 2px solid black;
   padding: .5em;
+  max-width: 75%;
 }
+      section.menus:not(.is-visible),
       section.menus > div:not(.is-visible),
       #intro-screen p:not(.is-visible) {
         display:none;
       }
+
+      .start-game-container:not(.is-visible) {
+        display: none;
+      }
 </style>
 </head><body>
-  <section class="menus">  
+  <section class="menus nes-container is-visible">  
     <div id="main-menu" class="is-visible">
       <h1>Rumel's Rescue</h1>
       <fieldset>
@@ -37,6 +43,7 @@ section.menus {
       <hr>
       <button id=main-menu-submit>Start</button>
       </div>
+
       <div id="intro-screen">
         <p class=is-visible>You were out for a pleasant ride with your best friend in the world; your pet Rumel The Lemur. The two of you were having quite the joyful occasion when
         a large truck swerved out in front of you causing you to veer off road.</p> 
@@ -46,6 +53,14 @@ section.menus {
         <div>
           <button class="last-page" disabled=disabled type=button> Back</button>
           <button class="next-page" type=button> Next</button>
+          <div class="start-game-container is-centered">
+          <hr>
+<span class="start-game-message">
+        Keep pressing <kbd>W</kbd>/<kbd>&uarr;</kbd>/LMB/Tapping Screen to catch the thiefs!
+        </span>
+        <br>
+        <button type=button id=start-game>Start Game!</button>
+        </div>
         </div>
       </div>
     </section>
