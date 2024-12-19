@@ -24,9 +24,9 @@ const _FOTL = (() => {
   };
 
   const difficulties = {
-    easy: 0,
-    medium: 1,
-    hard: 2
+    easy: 10,
+    medium: 20,
+    hard: 30
   };
 
   return {
@@ -54,23 +54,30 @@ gravity = 0;
 function gameInit() {
   // called once after the engine starts up
   // setup the game
-  _FOTL.player = new Player(levelSize);
 
   _FOTL.uiManager = new uiManager();
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 function gameUpdate() {
-  if (_FOTL.currentState === _FOTL.states.intro) {
+  if (_FOTL.currentState === _FOTL.states.menu || _FOTL.currentState === _FOTL.states.intro) {
     return;
   }
 
-  if (!_FOTL.vehicleFactory) {
+  if (!_FOTL.vehicleFactory && _FOTL.uiManager.difficulty) {
     _FOTL.vehicleFactory = new VehicleFactory({difficulty : _FOTL.uiManager.difficulty});
   }
 
+  if (!_FOTL.player && _FOTL.uiManager.difficulty) {
+    _FOTL.player = new Player(levelSize);
+  }
+
   if (keyWasPressed('KeyR')) {
-    window.location.reload();
+    engineObjectsDestroy();
+    _FOTL.player = new Player(levelSize);
+    _FOTL.score = 0;
+    _FOTL.currentState = _FOTL.states.running;
+    return;
   }
 
   if (_FOTL.currentState == _FOTL.states.gameOver) 

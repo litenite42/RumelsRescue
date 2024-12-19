@@ -4,7 +4,21 @@ class Player extends EngineObject {
 
     const initY = randInt(4, 8);
     const midX = sizeOfLevel.x / 2;
-    const initX = randInt(midX - 10, midX + 10);
+    const hardRegion = [5, 14];
+    const mediumRegion = [15, 25];
+    const easyRegion = [26, 33];
+
+    let region;
+
+    if (_FOTL.uiManager.difficulty === _FOTL.difficulties.easy) {
+      region = easyRegion;
+    } else if (_FOTL.uiManager.difficulty === _FOTL.difficulties.medium) {
+      region = mediumRegion;
+    } else {
+      region = hardRegion;
+    }
+
+    const initX = randInt(region[0], region[1]);
 
     this.pos = vec2(initX, initY);
     this.size = vec2(2, 1);

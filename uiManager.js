@@ -50,13 +50,29 @@ class uiManager {
     const startIntroBtn = this.currentMenu.querySelector("#main-menu-submit");
 
     startIntroBtn.addEventListener("click", (evt) => {
-      _FOTL.currentState = _FOTL.states.intro;
+      const difficulty = document.querySelector('[name="difficulty"]:checked').value.toLowerCase();
+      this.difficulty = _FOTL.difficulties[difficulty];
+
+      const skipIntro = document.querySelector('[name="skipIntro"]:checked');
+      const muteAudio = document.querySelector('[name="muteAudio"]:checked');
+      this.skipIntro = !!skipIntro;
+      this.muteAudio = !!muteAudio;
 
       this.currentMenu.classList.remove("is-visible");
+
+      if (this.skipIntro) {
+        _FOTL.currentState = _FOTL.states.running;
+        this.menuContainer.classList.remove('is-visible')
+      } 
+      else {
+      _FOTL.currentState = _FOTL.states.intro;
+
       this.currentMenu = Array.from(this.menus).filter(
         (m) => m.id == "intro-screen",
       )[0];
       this.currentMenu.classList.add("is-visible");
+      }
+
     });
 
     Array.from(document.querySelectorAll(".next-page")).forEach(NEXTPAGE);
