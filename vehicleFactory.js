@@ -8,6 +8,7 @@ class VehicleFactory {
       difficulty = _FOTL.difficulties.easy;
     }
     this.#difficulty = difficulty;
+    this.#lastLane = -100;
   }
 
   New() {
@@ -22,10 +23,14 @@ class VehicleFactory {
 
     const quads = [4, 9, 14, 19];
         
-    const randNdx = randInt(4);
-    const selectedQuad = quads[randNdx];
+    let randNdx = randInt(4);
+    let selectedQuad = quads[randNdx];
 
-      
+    while (selectedQuad === this.#lastLane)  {
+      randNdx = randInt(4);
+      selectedQuad = quads[randNdx];
+    }
+
     if (vehicleRand < spawnPoints[0]) {
       new EasyVehicle(selectedQuad);
     }
@@ -35,5 +40,7 @@ class VehicleFactory {
     else {
       new HardVehicle(selectedQuad);
     }
+
+    this.#lastLane = selectedQuad;
   } 
 }

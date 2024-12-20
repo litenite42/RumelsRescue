@@ -20,6 +20,7 @@ const _FOTL = (() => {
     paused: 200,
     crashed: 300,
     spinOut: 400,
+    stalledOut: 500,
     gameOver: -100
   };
 
@@ -36,7 +37,8 @@ const _FOTL = (() => {
     states: states,
     currentState: states.menu,
     difficulties: difficulties,
-    currentDifficulty: difficulties.easy
+    currentDifficulty: difficulties.easy,
+    lastPlayerActivityFrame: -1
   };
 })();
 
@@ -74,9 +76,11 @@ function gameUpdate() {
 
   if (keyWasPressed('KeyR')) {
     engineObjectsDestroy();
+    _FOTL.currentState = _FOTL.states.stalledOut; 
     _FOTL.player = new Player(levelSize);
     _FOTL.score = 0;
     _FOTL.currentState = _FOTL.states.running;
+
     return;
   }
 
@@ -87,11 +91,11 @@ function gameUpdate() {
     return;
   }
 
-  if (keyWasPressed('KeyM')) {
+  /*if (keyWasPressed('KeyM')) {
     _FOTL.uiManager.toggleVisibility();
 
     _FOTL.currentState = _FOTL.currentState !== _FOTL.states.menu ? _FOTL.states.menu : _FOTL.states.running;
-  }
+  }*/
 
   if (keyWasPressed('KeyP')) {
     _FOTL.currentState = _FOTL.currentState == _FOTL.states.paused ? _FOTL.states.running : _FOTL.states.paused;
@@ -107,11 +111,16 @@ function gameUpdate() {
     _FOTL.score++;
   }
 
-  if (frame % 256 == 0) {
+  if (frame - _FOTL.lastPlayerActivityFrame > 150) {
+    _FOTL.player.pos.y += 40;
+    _FOTL.lastPlayerActivityFrame = frame;
+  }
+
+  /*if (frame % 256 == 0) {
     const ndx = randInt(0, colors.length);
 
     _FOTL.bgColor = _FOTL.palette[colors[ndx]];
-  }
+  }*/
 
   const pipeSpawn = randInt(118, 228);
   if (frame % pipeSpawn == 0) {

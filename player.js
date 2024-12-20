@@ -43,6 +43,10 @@ class Player extends EngineObject {
 
     y += sign * step;
 
+    if (!!sign) {
+      _FOTL.lastPlayerActivityFrame = frame;
+    }
+
     if (y > maxVal) y = maxVal;
     else if (y <= minVal) y = minVal;
 
