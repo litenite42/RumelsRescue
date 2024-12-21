@@ -66,14 +66,6 @@ function gameUpdate() {
     return;
   }
 
-  if (!_FOTL.vehicleFactory && _FOTL.uiManager.difficulty) {
-    _FOTL.vehicleFactory = new VehicleFactory({difficulty : _FOTL.uiManager.difficulty});
-  }
-
-  if (!_FOTL.player && _FOTL.uiManager.difficulty) {
-    _FOTL.player = new Player(levelSize);
-  }
-
   if (keyWasPressed('KeyR')) {
     engineObjectsDestroy();
     _FOTL.currentState = _FOTL.states.stalledOut; 
@@ -111,27 +103,32 @@ function gameUpdate() {
     _FOTL.score++;
   }
 
-  if (frame - _FOTL.lastPlayerActivityFrame > 150) {
-    _FOTL.player.pos.y += 40;
-    _FOTL.lastPlayerActivityFrame = frame;
-  }
-
-  /*if (frame % 256 == 0) {
-    const ndx = randInt(0, colors.length);
-
-    _FOTL.bgColor = _FOTL.palette[colors[ndx]];
-  }*/
-
-  const pipeSpawn = randInt(118, 228);
-  if (frame % pipeSpawn == 0) {
-    _FOTL.vehicleFactory.New();
-  }
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 function gameUpdatePost() {
   // called after physics and objects are updated
   // setup camera and prepare for render
+
+  if (!_FOTL.vehicleFactory && _FOTL.uiManager.difficulty) {
+    _FOTL.vehicleFactory = new VehicleFactory({difficulty : _FOTL.uiManager.difficulty});
+  }
+
+  if (!_FOTL.player && _FOTL.uiManager.difficulty) {
+    _FOTL.player = new Player(levelSize);
+  }
+
+  if (_FOTL.currentState !== _FOTL.states.running) return;
+
+  if (frame - _FOTL.lastPlayerActivityFrame > 150) {
+    _FOTL.player.pos.y += randInt(5,12);
+    _FOTL.lastPlayerActivityFrame = frame;
+  }
+
+  const pipeSpawn = randInt(118, 228);
+  if (frame % pipeSpawn == 0) {
+    _FOTL.vehicleFactory.New();
+  }
 }
 
 ///////////////////////////////////////////////////////////////////////////

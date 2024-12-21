@@ -43,7 +43,7 @@ class Player extends EngineObject {
 
     y += sign * step;
 
-    if (!!sign) {
+    if (sign > 0) {
       _FOTL.lastPlayerActivityFrame = frame;
     }
 
