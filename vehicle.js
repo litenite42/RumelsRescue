@@ -51,3 +51,10 @@ class HardVehicle extends Vehicle {
     super(.08, .1, lane);
   }
 }
+
+class FallingVehicle extends Vehicle {
+  constructor(lane) {
+    super(.04, .07, 19);
+    this.velocity.y = -1 * rand(.005, .012);
+  }
+}

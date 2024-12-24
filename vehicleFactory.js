@@ -21,7 +21,7 @@ class VehicleFactory {
       spawnPoints = spawnPoints.map(i => i - 2);
     }
 
-    const quads = [4, 9, 14, 19];
+    /*const quads = [4, 9, 14, 19];
         
     let randNdx = randInt(4);
     let selectedQuad = quads[randNdx];
@@ -29,7 +29,8 @@ class VehicleFactory {
     while (selectedQuad === this.#lastLane)  {
       randNdx = randInt(4);
       selectedQuad = quads[randNdx];
-    }
+    }*/
+    let selectedQuad = this.#SelectLane();
 
     if (vehicleRand < spawnPoints[0]) {
       new EasyVehicle(selectedQuad);
@@ -42,5 +43,26 @@ class VehicleFactory {
     }
 
     this.#lastLane = selectedQuad;
+
+    /*if (_FOTL.score > 12 && frame % 72 == 0) {
+      new FallingVehicle(19);
+
+      this.#lastLane = 19;
+    }*/
+
   } 
+
+  #SelectLane() {
+    const quads = [4, 9, 14, 19];
+        
+    let randNdx = randInt(4);
+    let selectedQuad = quads[randNdx];
+
+    while (selectedQuad === this.#lastLane)  {
+      randNdx = randInt(4);
+      selectedQuad = quads[randNdx];
+    }
+
+    return selectedQuad;
+  }
 }
