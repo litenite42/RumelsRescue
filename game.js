@@ -24,6 +24,8 @@ const _FOTL = (() => {
     gameOver: -100
   };
 
+  const music = ['assets/music/01.mp3'];
+
   const difficulties = {
     easy: 10,
     medium: 20,
@@ -38,7 +40,9 @@ const _FOTL = (() => {
     currentState: states.menu,
     difficulties: difficulties,
     currentDifficulty: difficulties.easy,
-    lastPlayerActivityFrame: -1
+    lastPlayerActivityFrame: -1,
+    currentlyPlaying: '',
+    music: music
   };
 })();
 
@@ -56,6 +60,7 @@ gravity = 0;
 function gameInit() {
   // called once after the engine starts up
   // setup the game
+  _FOTL.soundtrack = _FOTL.music.map(x => new SoundWave(x));
 
   _FOTL.uiManager = new uiManager();
 }
@@ -68,10 +73,11 @@ function gameUpdate() {
 
   if (keyWasPressed('KeyR')) {
     engineObjectsDestroy();
-    _FOTL.currentState = _FOTL.states.stalledOut; 
+
     _FOTL.player = new Player(levelSize);
     _FOTL.score = 0;
     _FOTL.currentState = _FOTL.states.running;
+    _FOTL.currentlyPlaying = '';
 
     return;
   }
@@ -80,6 +86,7 @@ function gameUpdate() {
   {
     engineObjectsDestroy();
 
+    if (_FOTL.currentlyPlaying) _FOTL.currentlyPlaying.stop();
     return;
   }
 
@@ -91,6 +98,13 @@ function gameUpdate() {
 
   if (keyWasPressed('KeyP')) {
     _FOTL.currentState = _FOTL.currentState == _FOTL.states.paused ? _FOTL.states.running : _FOTL.states.paused;
+    
+    if (isPaused()) {
+      _FOTL.currentlyPlaying.stop();
+    } else {
+
+      _FOTL.currentlyPlaying.play(0, .6, 1, 0, true);
+    } 
 
     return;
   }
@@ -119,6 +133,11 @@ function gameUpdatePost() {
   }
 
   if (_FOTL.currentState !== _FOTL.states.running) return;
+  if (!_FOTL.currentlyPlaying) {
+    _FOTL.soundtrack[0].play(0,.6,1,0, true);
+
+    _FOTL.currentlyPlaying = _FOTL.soundtrack[0];
+  }
 
   if (frame - _FOTL.lastPlayerActivityFrame > 150) {
     _FOTL.player.pos.y += randInt(5,12);
