@@ -129,6 +129,10 @@ function gameUpdatePost() {
   if (frame % pipeSpawn == 0) {
     _FOTL.vehicleFactory.New();
   }
+
+  if (_FOTL.score > 12 && (frame % randInt(172, 296) == 0)) {
+    new FallingVehicle(19);
+  }
 }
 
 ///////////////////////////////////////////////////////////////////////////

@@ -39,7 +39,7 @@ class Player extends EngineObject {
     const range = maxVal - minVal;
 
     const step = range / 60;
-    const sign = keyIsDown("KeyW") || keyIsDown("ArrowUp") ? 1.2 : -1;
+    const sign = keyIsDown("KeyW") || keyIsDown("ArrowUp") || mouseIsDown(0) ? 1.2 : -1;
 
     y += sign * step;
 
