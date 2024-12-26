@@ -53,7 +53,7 @@ class uiManager {
     startIntroBtn.addEventListener("click", (evt) => {
       const difficulty = document.querySelector('[name="difficulty"]:checked').value.toLowerCase();
       this.difficulty = _FOTL.difficulties[difficulty];
-
+      _FOTL.currentDifficulty = this.difficulty;
       const skipIntro = document.querySelector('[name="skipIntro"]:checked');
       const muteAudio = document.querySelector('[name="muteAudio"]:checked');
       const punishLazy = document.querySelector('[name="punishLazy"]:checked');

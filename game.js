@@ -115,6 +115,10 @@ function gameUpdate() {
 
   if (frame % 99 == 0) {
     _FOTL.score++;
+    
+  if (!!_FOTL.uiManager.punishLazy) {
+    _FOTL.score += _FOTL.currentDifficulty / 10;
+  }
   }
 
 }
