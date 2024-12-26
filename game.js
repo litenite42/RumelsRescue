@@ -101,7 +101,7 @@ function gameUpdate() {
       _FOTL.currentlyPlaying.stop();
     } else {
 
-      _FOTL.currentlyPlaying.play(0, .6, 1, 0, true);
+      !_FOTL.uiManager.mute && _FOTL.currentlyPlaying.play(0, .6, 1, 0, true);
     } 
 
     _FOTL.uiManager.togglePause();
@@ -133,13 +133,13 @@ function gameUpdatePost() {
   }
 
   if (_FOTL.currentState !== _FOTL.states.running) return;
-  if (!_FOTL.currentlyPlaying) {
+  if (!_FOTL.uiManager.mute && !_FOTL.currentlyPlaying) {
     _FOTL.soundtrack[0].play(0,.6,1,0, true);
 
     _FOTL.currentlyPlaying = _FOTL.soundtrack[0];
   }
 
-  if (frame - _FOTL.lastPlayerActivityFrame > 150) {
+  if (!!_FOTL.uiManager.punishLazy && frame - _FOTL.lastPlayerActivityFrame > 150) {
     _FOTL.player.pos.y += randInt(5,12);
     _FOTL.lastPlayerActivityFrame = frame;
   }

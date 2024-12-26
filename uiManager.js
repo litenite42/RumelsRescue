@@ -33,6 +33,7 @@ function LASTPAGE(el) {
 class uiManager {
   difficulty;
   mute;
+  punishLazy;
   visible;
 
   menuContainer;
@@ -55,8 +56,11 @@ class uiManager {
 
       const skipIntro = document.querySelector('[name="skipIntro"]:checked');
       const muteAudio = document.querySelector('[name="muteAudio"]:checked');
+      const punishLazy = document.querySelector('[name="punishLazy"]:checked');
+
       this.skipIntro = !!skipIntro;
-      this.muteAudio = !!muteAudio;
+      this.mute = !!muteAudio;
+      this.punishLazy = !!punishLazy;
 
       this.currentMenu.classList.remove("is-visible");
 
