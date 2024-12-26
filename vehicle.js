@@ -19,6 +19,7 @@ class Vehicle extends EngineObject
     collideWithObject(obj) {
       if (obj !== _FOTL.player) return;
       _FOTL.currentState = _FOTL.states.gameOver;
+      _FOTL.gameOverReason = 'Crashed';
     }
 
     update() {

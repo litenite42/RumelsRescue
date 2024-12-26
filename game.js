@@ -56,6 +56,15 @@ setCameraPos(levelSize.scale(0.5)); // center camera in level
 
 gravity = 0;
 
+function gameReset() {
+    engineObjectsDestroy();
+
+    _FOTL.player = new Player(levelSize);
+    _FOTL.score = 0;
+    _FOTL.currentState = _FOTL.states.running;
+    _FOTL.currentlyPlaying = '';
+    _FOTL.uiManager.toggleGameOver();
+}
 ///////////////////////////////////////////////////////////////////////////////
 function gameInit() {
   // called once after the engine starts up
@@ -72,12 +81,7 @@ function gameUpdate() {
   }
 
   if (keyWasPressed('KeyR')) {
-    engineObjectsDestroy();
-
-    _FOTL.player = new Player(levelSize);
-    _FOTL.score = 0;
-    _FOTL.currentState = _FOTL.states.running;
-    _FOTL.currentlyPlaying = '';
+    gameReset();
 
     return;
   }
@@ -90,12 +94,6 @@ function gameUpdate() {
     return;
   }
 
-  /*if (keyWasPressed('KeyM')) {
-    _FOTL.uiManager.toggleVisibility();
-
-    _FOTL.currentState = _FOTL.currentState !== _FOTL.states.menu ? _FOTL.states.menu : _FOTL.states.running;
-  }*/
-
   if (keyWasPressed('KeyP')) {
     _FOTL.currentState = _FOTL.currentState == _FOTL.states.paused ? _FOTL.states.running : _FOTL.states.paused;
     
@@ -106,6 +104,8 @@ function gameUpdate() {
       _FOTL.currentlyPlaying.play(0, .6, 1, 0, true);
     } 
 
+    _FOTL.uiManager.togglePause();
+    _FOTL.lastPlayerActivityFrame = frame;
     return;
   }
   
@@ -144,12 +144,16 @@ function gameUpdatePost() {
     _FOTL.lastPlayerActivityFrame = frame;
   }
 
+  // need to make this just called everytime and internally decides if any spawns are needed.
+  // would be able to move falling vehicles inside then...
   const pipeSpawn = randInt(118, 228);
   if (frame % pipeSpawn == 0) {
     _FOTL.vehicleFactory.New();
   }
 
-  if (_FOTL.score > 12 && (frame % randInt(172, 296) == 0)) {
+  const fallingVehicleSpawns = [25, 18, 12];
+  const currentSpawn = (_FOTL.currentDifficulty / 10) - 1;
+  if (_FOTL.score > fallingVehicleSpawns[currentSpawn] && (frame % randInt(172, 296) == 0)) {
     new FallingVehicle(19);
   }
 }
@@ -177,30 +181,21 @@ function gameRender() {
 function gameRenderPost() {
   // called after objects are rendered
   // draw effects or hud that appear above all objects
+  if (_FOTL.currentState == _FOTL.states.gameOver && !_FOTL.uiManager.visible) {
+    _FOTL.uiManager.toggleGameOver();
+  }
+   
   if (_FOTL.currentState == _FOTL.states.gameOver) {
-    drawTextScreen(
-      `Game Over\nScore ${_FOTL.score}\nType 'R' to reset.`,
-      vec2(500, 240),
-      24,
-      new Color().setHex("#000000"),
-    );
     return;
   }
 
-  if (_FOTL.currentState === _FOTL.states.paused){
     drawTextScreen(
-      "Paused\n[P to unpause]",
-      vec2(500, 240),
-      24,
-      new Color().setHex("#000000"),
-    );
-  }
-    drawTextScreen(
-      "Rumel's Flight",
+      "Rumel's Rescue",
       vec2(164, 20),
       24,
       new Color().setHex("#000000"),
     );
+
     drawTextScreen(
       "Score: " + _FOTL.score,
       vec2(564, 20),

@@ -72,7 +72,6 @@ class uiManager {
       )[0];
       this.currentMenu.classList.add("is-visible");
       }
-
     });
 
     Array.from(document.querySelectorAll(".next-page")).forEach(NEXTPAGE);
@@ -85,15 +84,37 @@ class uiManager {
     })
   }
 
+  togglePause() {
+    this.toggleVisibility('pause-screen');
+  }
+
+  toggleGameOver() {
+    const gameOverScore = document.querySelector('#final-score'),
+      gameOverReason = document.querySelector('#game-over-reason');
+
+    gameOverScore.textContent = _FOTL.score;
+    gameOverReason.textContent = _FOTL.gameOverReason;
+
+    this.toggleVisibility('game-over-screen');
+  }
+
   toggleVisibility(menuId) {
-    Array.from(this.menus).filter(m => m.id == menuId).forEach(m => {
-      if (m.classList.includes('is-visible')) {
+    Array.from(this.menus)/*.filter(m => m.id == menuId)*/.forEach(m => {
+      if (m.id !== menuId) {
         m.classList.remove('is-visible');
+        return;
+      }
+
+      if (m.classList.contains('is-visible')) {
+        m.classList.remove('is-visible');
+        this.menuContainer.classList.remove('is-visible');
+        this.visible = false;
       } else {
         m.classList.add('is-visible');
+        this.menuContainer.classList.add('is-visible');
+        this.visible = true;
       }
     });
-    this.visible = !this.visible;
   }
 
   getVisibility() {

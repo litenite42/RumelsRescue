@@ -38,8 +38,11 @@ section.menus {
         <label><input type="radio" name="difficulty" value="Medium"> Medium</label>
         <label><input type="radio" name="difficulty" value="Hard"> Hard</label>
       </fieldset>
-      <!-- <label><input type=checkbox name=muteAudio value=true> Mute Audio</label> -->
+      <fieldset>
+        <legend>Settings</legend>
+      <label><input type=checkbox name=muteAudio value=true> Mute Audio</label>
       <label><input type=checkbox name=skipIntro value=true> Skip Intro</label>
+      </fieldset>
       <hr>
       <button id=main-menu-submit>Start</button>
       </div>
@@ -47,22 +50,33 @@ section.menus {
       <div id="intro-screen">
         <p class=is-visible>You were out for a pleasant ride with your best friend in the world; your pet Rumel The Lemur. The two of you were having quite the joyful occasion when
         a large truck swerved out in front of you causing you to veer off road.</p> 
-        <p>You came to pinned by the body of your motorcycle and can only look on as a pair of flannel covered hands swoop in and take grasp of Rumel; laying unconcious but a few meters away!
+        <p>You came to pinned by the body of your motorcycle and can only look on as a pair of flannel covered arms swoop into view and take grasp of Rumel; laying unconcious but a few meters away!
         <p>Horrified, you struggle against the weight on your legs to no avail. VRROOOMMM!! The truck spits and belches dirt all over as it roars away.</p>
-        <p>A sudden strength comes over you and you're able to leverage the vehicle off you. A look at the thing tells you it's going to be a bumpy ride, but Rumel needs you!</p>
+        <p>A sudden strength comes over you and you're able to leverage the vehicle off of you. A look at the thing tells you it's going to be a bumpy ride, but Rumel needs you!</p>
         <div>
           <button class="last-page" disabled=disabled type=button> Back</button>
           <button class="next-page" type=button> Next</button>
           <div class="start-game-container is-centered">
           <hr>
 <span class="start-game-message">
-        Keep pressing <kbd>W</kbd> to catch the thieves!
+  Keep pressing <kbd>W</kbd>/<kbd>&uarr;</kbd>/LMB/Tapping your screen to try and catch up to the thieves! How long will you make it?
         </span>
         <br>
         <button type=button id=start-game>Start Game!</button>
         </div>
         </div>
       </div>
+      <div id=pause-screen>
+        <h2>Pause</h2> 
+        <p>Press 'P' to unpause</p>
+        </div>
+        <div id=game-over-screen>
+          <h2>Game Over!</h2>
+          <p>You <span id=game-over-reason></span>!</p>
+          <p>Your score was: <span id=final-score></span></p>
+          <hr>
+          <p>Press <kbd>R</kbd> to restart.
+          </div>
     </section>
 
 <script src=https://cdn.jsdelivr.net/gh/KilledByAPixel/LittleJS/dist/littlejs.release.js></script>
