@@ -117,7 +117,7 @@ function gameUpdate() {
     _FOTL.score++;
     
   if (!!_FOTL.uiManager.punishLazy) {
-    _FOTL.score += _FOTL.currentDifficulty / 10;
+    _FOTL.score += _FOTL.uiManager.difficulty / 10;
   }
   }
 
@@ -156,7 +156,7 @@ function gameUpdatePost() {
   }
 
   const fallingVehicleSpawns = [25, 18, 12];
-  const currentSpawn = (_FOTL.currentDifficulty / 10) - 1;
+  const currentSpawn = (_FOTL.uiManager.difficulty / 10) - 1;
   if (_FOTL.score > fallingVehicleSpawns[currentSpawn] && (frame % randInt(172, 296) == 0)) {
     new FallingVehicle(19);
   }
