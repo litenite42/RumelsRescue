@@ -148,18 +148,7 @@ function gameUpdatePost() {
     _FOTL.lastPlayerActivityFrame = frame;
   }
 
-  // need to make this just called everytime and internally decides if any spawns are needed.
-  // would be able to move falling vehicles inside then...
-  const pipeSpawn = randInt(118, 228);
-  if (frame % pipeSpawn == 0) {
-    _FOTL.vehicleFactory.New();
-  }
-
-  const fallingVehicleSpawns = [25, 18, 12];
-  const currentSpawn = (_FOTL.uiManager.difficulty / 10) - 1;
-  if (_FOTL.score > fallingVehicleSpawns[currentSpawn] && (frame % randInt(172, 296) == 0)) {
-    new FallingVehicle(19);
-  }
+  _FOTL.vehicleFactory.New();
 }
 
 ///////////////////////////////////////////////////////////////////////////
