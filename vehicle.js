@@ -14,6 +14,8 @@ class Vehicle extends EngineObject
         this.color = randColor();
 
         this.setCollision();
+
+        this.mass = 0;
     }
   
     collideWithObject(obj) {
@@ -56,6 +58,8 @@ class HardVehicle extends Vehicle {
 class FallingVehicle extends Vehicle {
   constructor(lane) {
     super(.04, .07, 19);
-    this.velocity.y = -1 * rand(.005, .012);
+
+    this.mass = rand(.1, .6);
+    this.gravityScale = .05;
   }
 }

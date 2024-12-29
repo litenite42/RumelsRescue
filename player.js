@@ -24,7 +24,8 @@ class Player extends EngineObject {
     this.size = vec2(2, 1);
     this.color = new Color().setHex("#bbbbbb");
 
-    this.gravityScale = 0.003;
+    this.gravityScale = 1;
+    this.mass = 0;
     this.setCollision();
   }
 
@@ -36,27 +37,30 @@ class Player extends EngineObject {
     const adjustment = 1.1 * this.size.y;
     const minVal = 1;
     const maxVal = 19;
-    const range = maxVal - minVal;
 
-    const step = range / 60;
-    const sign = keyIsDown("KeyW") || keyIsDown("ArrowUp") || mouseIsDown(0) ? 1.2 : -1;
+    const playerMoved = keyIsDown("KeyW") || keyIsDown("ArrowUp") || mouseIsDown(0);
 
-    y += sign * step;
-
-    if (sign > 0) {
+    if (playerMoved) {
       _FOTL.lastPlayerActivityFrame = frame;
+
+      _FOTL.player.applyForce(vec2(0, 1/60));
+      this.mass = 1;
+    } else {
     }
 
-    if (y > maxVal) y = maxVal;
-    else if (y <= minVal) y = minVal;
 
-    this.pos.x = clamp(
-      this.pos.x,
-      this.size.x / 2,
-      levelSize.x - this.size.x / 2,
-    );
-
-    this.pos.y = y;
+    this.velocity.y = clamp(this.velocity.y, -2, 2);
+    this.pos.y = clamp(this.pos.y, minVal, maxVal);
+    // if (y > maxVal) y = maxVal;
+    // else if (y <= minVal) y = minVal;
+//
+    // this.pos.x = clamp(
+      // this.pos.x,
+      // this.size.x / 2,
+      // levelSize.x - this.size.x / 2,
+    // );
+//
+    // this.pos.y = y;
 
     super.update();
   }

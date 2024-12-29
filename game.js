@@ -21,17 +21,16 @@ const _FOTL = (() => {
     crashed: 300,
     spinOut: 400,
     stalledOut: 500,
-    gameOver: -100
+    gameOver: -100,
   };
 
-  const music = ['assets/music/01.mp3'];
+  const music = ["assets/music/01.mp3"];
 
   const difficulties = {
     easy: 10,
     medium: 20,
-    hard: 30
+    hard: 30,
   };
-
   return {
     palette: palette,
     bgColor: palette.white,
@@ -41,86 +40,91 @@ const _FOTL = (() => {
     difficulties: difficulties,
     currentDifficulty: difficulties.easy,
     lastPlayerActivityFrame: -1,
-    currentlyPlaying: '',
-    music: music
+    currentlyPlaying: "",
+    music: music,
   };
 })();
 
 function isPaused() {
-  return [_FOTL.states.paused, _FOTL.states.menu, _FOTL.states.intro].includes(_FOTL.currentState);
+  return [_FOTL.states.paused, _FOTL.states.menu, _FOTL.states.intro].includes(
+    _FOTL.currentState,
+  );
 }
 
 const levelSize = vec2(38, 20); // size of play area
+
 setCanvasFixedSize(vec2(1280, 720)); // use a 720p fixed size canvas
 setCameraPos(levelSize.scale(0.5)); // center camera in level
 
-gravity = 0;
-
 function gameReset() {
-    engineObjectsDestroy();
+  engineObjectsDestroy();
 
-    _FOTL.player = new Player(levelSize);
-    _FOTL.score = 0;
-    _FOTL.currentState = _FOTL.states.running;
-    _FOTL.currentlyPlaying = '';
-    _FOTL.uiManager.toggleGameOver();
+  _FOTL.player = new Player(levelSize);
+  _FOTL.score = 0;
+  _FOTL.currentState = _FOTL.states.running;
+  _FOTL.currentlyPlaying = "";
+  _FOTL.uiManager.toggleGameOver();
 }
 ///////////////////////////////////////////////////////////////////////////////
 function gameInit() {
   // called once after the engine starts up
   // setup the game
-  _FOTL.soundtrack = _FOTL.music.map(x => new SoundWave(x));
+  _FOTL.soundtrack = _FOTL.music.map((x) => new SoundWave(x));
 
+  gravity = -0.008333;
   _FOTL.uiManager = new uiManager();
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 function gameUpdate() {
-  if (_FOTL.currentState === _FOTL.states.menu || _FOTL.currentState === _FOTL.states.intro) {
+  if (
+    _FOTL.currentState === _FOTL.states.menu ||
+    _FOTL.currentState === _FOTL.states.intro
+  ) {
     return;
   }
 
-  if (keyWasPressed('KeyR')) {
+  if (keyWasPressed("KeyR")) {
     gameReset();
 
     return;
   }
 
-  if (_FOTL.currentState == _FOTL.states.gameOver) 
-  {
+  if (_FOTL.currentState == _FOTL.states.gameOver) {
     engineObjectsDestroy();
 
     if (_FOTL.currentlyPlaying) _FOTL.currentlyPlaying.stop();
     return;
   }
 
-  if (keyWasPressed('KeyP')) {
-    _FOTL.currentState = _FOTL.currentState == _FOTL.states.paused ? _FOTL.states.running : _FOTL.states.paused;
-    
+  if (keyWasPressed("KeyP")) {
+    _FOTL.currentState =
+      _FOTL.currentState == _FOTL.states.paused
+        ? _FOTL.states.running
+        : _FOTL.states.paused;
+
     if (isPaused()) {
       _FOTL.currentlyPlaying.stop();
     } else {
-
-      !_FOTL.uiManager.mute && _FOTL.currentlyPlaying.play(0, .6, 1, 0, true);
-    } 
+      !_FOTL.uiManager.mute && _FOTL.currentlyPlaying.play(0, 0.6, 1, 0, true);
+    }
 
     _FOTL.uiManager.togglePause();
     _FOTL.lastPlayerActivityFrame = frame;
     return;
   }
-  
+
   if (isPaused()) return;
 
   const colors = Object.getOwnPropertyNames(_FOTL.palette);
 
   if (frame % 99 == 0) {
     _FOTL.score++;
-    
-  if (!!_FOTL.uiManager.punishLazy) {
-    _FOTL.score += _FOTL.uiManager.difficulty / 10;
-  }
-  }
 
+    if (!!_FOTL.uiManager.punishLazy) {
+      _FOTL.score += _FOTL.uiManager.difficulty / 10;
+    }
+  }
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -129,7 +133,9 @@ function gameUpdatePost() {
   // setup camera and prepare for render
 
   if (!_FOTL.vehicleFactory && _FOTL.uiManager.difficulty) {
-    _FOTL.vehicleFactory = new VehicleFactory({difficulty : _FOTL.uiManager.difficulty});
+    _FOTL.vehicleFactory = new VehicleFactory({
+      difficulty: _FOTL.uiManager.difficulty,
+    });
   }
 
   if (!_FOTL.player && _FOTL.uiManager.difficulty) {
@@ -138,13 +144,16 @@ function gameUpdatePost() {
 
   if (_FOTL.currentState !== _FOTL.states.running) return;
   if (!_FOTL.uiManager.mute && !_FOTL.currentlyPlaying) {
-    _FOTL.soundtrack[0].play(0,.6,1,0, true);
+    _FOTL.soundtrack[0].play(0, 0.6, 1, 0, true);
 
     _FOTL.currentlyPlaying = _FOTL.soundtrack[0];
   }
 
-  if (!!_FOTL.uiManager.punishLazy && frame - _FOTL.lastPlayerActivityFrame > 150) {
-    _FOTL.player.pos.y += randInt(5,12);
+  if (
+    !!_FOTL.uiManager.punishLazy &&
+    frame - _FOTL.lastPlayerActivityFrame > 150
+  ) {
+    _FOTL.player.pos.y += randInt(5, 12);
     _FOTL.lastPlayerActivityFrame = frame;
   }
 
@@ -161,12 +170,13 @@ function gameRender() {
   drawRect(cameraPos, mainCanvasSize.scale(0.8), _FOTL.bgColor);
   drawRect(cameraPos, vec2(mainCanvasSize.x, 19), _FOTL.palette.white);
   if (debug) {
-  drawLine(vec2(0, 19.5), vec2(38, 19.5), 0.1, new Color().setHex("#000000"));
-  drawLine(vec2(0, 19.5), vec2(0, 0), 0.1, new Color().setHex("#000000"));
-  drawLine(vec2(0, 0), vec2(5, 0), 0.1, new Color().setHex("#000000"));
-  drawLine(vec2(0, 5), vec2(5, 5), 0.1, new Color().setHex("#000000"));
-  drawLine(vec2(0, 10), vec2(5, 10), 0.1, new Color().setHex("#000000"));
-  drawLine(vec2(0, 15), vec2(5, 15), 0.1, new Color().setHex("#000000"));
+    drawLine(vec2(0, 24.5), vec2(38, 24.5), 0.1, new Color().setHex("#000000"));
+    drawLine(vec2(0, 19.5), vec2(38, 19.5), 0.1, new Color().setHex("#000000"));
+    drawLine(vec2(0, 19.5), vec2(0, 0), 0.1, new Color().setHex("#000000"));
+    drawLine(vec2(0, 0), vec2(5, 0), 0.1, new Color().setHex("#FF0000"));
+    drawLine(vec2(0, 5), vec2(5, 5), 0.1, new Color().setHex("#00FF00"));
+    drawLine(vec2(0, 10), vec2(5, 10), 0.1, new Color().setHex("#0000FF"));
+    drawLine(vec2(0, 15), vec2(5, 15), 0.1, new Color().setHex("#000000"));
   }
 }
 
@@ -177,24 +187,24 @@ function gameRenderPost() {
   if (_FOTL.currentState == _FOTL.states.gameOver && !_FOTL.uiManager.visible) {
     _FOTL.uiManager.toggleGameOver();
   }
-   
+
   if (_FOTL.currentState == _FOTL.states.gameOver) {
     return;
   }
 
-    drawTextScreen(
-      "Rumel's Rescue",
-      vec2(164, 20),
-      24,
-      new Color().setHex("#000000"),
-    );
+  drawTextScreen(
+    "Rumel's Rescue",
+    vec2(164, 20),
+    24,
+    new Color().setHex("#000000"),
+  );
 
-    drawTextScreen(
-      "Score: " + _FOTL.score,
-      vec2(564, 20),
-      24,
-      new Color().setHex("#000000"),
-    );
+  drawTextScreen(
+    "Score: " + _FOTL.score,
+    vec2(564, 20),
+    24,
+    new Color().setHex("#000000"),
+  );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
