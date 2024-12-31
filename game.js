@@ -31,6 +31,7 @@ const _FOTL = (() => {
     medium: 20,
     hard: 30,
   };
+
   return {
     palette: palette,
     bgColor: palette.white,
@@ -59,10 +60,12 @@ setCameraPos(levelSize.scale(0.5)); // center camera in level
 function gameReset() {
   engineObjectsDestroy();
 
+  _FOTL.player = 0;
   _FOTL.player = new Player(levelSize);
   _FOTL.score = 0;
   _FOTL.currentState = _FOTL.states.running;
   _FOTL.currentlyPlaying = "";
+
   _FOTL.uiManager.toggleGameOver();
 }
 ///////////////////////////////////////////////////////////////////////////////
@@ -92,8 +95,8 @@ function gameUpdate() {
 
   if (_FOTL.currentState == _FOTL.states.gameOver) {
     engineObjectsDestroy();
-
-    if (_FOTL.currentlyPlaying) _FOTL.currentlyPlaying.stop();
+ 
+    _FOTL.currentlyPlaying  && _FOTL.currentlyPlaying.stop();
     return;
   }
 
@@ -104,8 +107,8 @@ function gameUpdate() {
         : _FOTL.states.paused;
 
     if (isPaused()) {
-      _FOTL.currentlyPlaying.stop();
-    } else {
+      _FOTL.currentlyPlaying && _FOTL.currentlyPlaying.stop();
+    } else { 
       !_FOTL.uiManager.mute && _FOTL.currentlyPlaying.play(0, 0.6, 1, 0, true);
     }
 
@@ -151,9 +154,9 @@ function gameUpdatePost() {
 
   if (
     !!_FOTL.uiManager.punishLazy &&
-    frame - _FOTL.lastPlayerActivityFrame > 150
+    frame - _FOTL.lastPlayerActivityFrame > 170
   ) {
-    _FOTL.player.pos.y += randInt(5, 12);
+    _FOTL.player.applyForce(vec2(0, 4));
     _FOTL.lastPlayerActivityFrame = frame;
   }
 
@@ -169,6 +172,10 @@ function gameRender() {
 
   drawRect(cameraPos, mainCanvasSize.scale(0.8), _FOTL.bgColor);
   drawRect(cameraPos, vec2(mainCanvasSize.x, 19), _FOTL.palette.white);
+
+  drawLine(vec2(0, 19.5), vec2(38, 19.5), 0.1, new Color().setHex("#AAAAAA"));
+  drawLine(vec2(0, 0), vec2(38, 0), 0.1, new Color().setHex("#AAAAAA"));
+
   if (debug) {
     drawLine(vec2(0, 24.5), vec2(38, 24.5), 0.1, new Color().setHex("#000000"));
     drawLine(vec2(0, 19.5), vec2(38, 19.5), 0.1, new Color().setHex("#000000"));
@@ -184,13 +191,15 @@ function gameRender() {
 function gameRenderPost() {
   // called after objects are rendered
   // draw effects or hud that appear above all objects
-  if (_FOTL.currentState == _FOTL.states.gameOver && !_FOTL.uiManager.visible) {
+  if ((_FOTL.currentState == _FOTL.states.gameOver || _FOTL.currentState == _FOTL.states.spinout) && !_FOTL.uiManager.visible) {
     _FOTL.uiManager.toggleGameOver();
   }
 
   if (_FOTL.currentState == _FOTL.states.gameOver) {
     return;
   }
+
+  if (!_FOTL.player) return;
 
   drawTextScreen(
     "Rumel's Rescue",
@@ -200,11 +209,25 @@ function gameRenderPost() {
   );
 
   drawTextScreen(
-    "Score: " + _FOTL.score,
-    vec2(564, 20),
+    "Health: " + _FOTL.player.health,
+    vec2(764, 20),
     24,
     new Color().setHex("#000000"),
   );
+
+  drawTextScreen(
+    "Score: " + _FOTL.score,
+    vec2(884, 20),
+    24,
+    new Color().setHex("#000000"),
+  );
+
+  if (debug) {
+    drawText(`(${_FOTL.player.pos.x}, ${_FOTL.player.pos.y})`,
+    vec2(_FOTL.player.pos.x, _FOTL.player.pos.y),
+    3,
+    RED);
+  }
 }
 
 ///////////////////////////////////////////////////////////////////////////////

@@ -98,6 +98,7 @@ class uiManager {
 
     gameOverScore.textContent = _FOTL.score;
     gameOverReason.textContent = _FOTL.gameOverReason;
+    _FOTL.currentState = _FOTL.states.gameOver;
 
     this.toggleVisibility('game-over-screen');
   }

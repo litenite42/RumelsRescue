@@ -1,6 +1,12 @@
 class Player extends EngineObject {
+  health;
+  guardrailTimer;
+
   constructor(sizeOfLevel) {
     super();
+
+    this.health = 3;
+    this.guardrailTimer = 0;
 
     const initY = randInt(4, 8);
     const midX = sizeOfLevel.x / 2;
@@ -31,6 +37,7 @@ class Player extends EngineObject {
 
   update() {
     if (isPaused()) return;
+    if (_FOTL.currentState == _FOTL.states.gameOver || _FOTL.currentState == _FOTL.states.spinout) return;
 
     let y = this.pos.y;
 
@@ -38,31 +45,37 @@ class Player extends EngineObject {
     const minVal = 1;
     const maxVal = 19;
 
-    const playerMoved = keyIsDown("KeyW") || keyIsDown("ArrowUp") || mouseIsDown(0);
+    const playerMoved =
+      keyIsDown("KeyW") || keyIsDown("ArrowUp") || mouseIsDown(0);
 
     if (playerMoved) {
       _FOTL.lastPlayerActivityFrame = frame;
 
-      _FOTL.player.applyForce(vec2(0, 1/60));
+      _FOTL.player.applyForce(vec2(0, 1 / 60));
       this.mass = 1;
+    } 
+
+    if ((this.pos.y >= maxVal || this.pos.y <= minVal) && !this.guardrailTimer) {
+      this.guardrailTimer = setTimeout(() => { this.decrementHealth() }, 5400);
     } else {
+     this.guardrailTimer && clearTimeout(this.guardrailTimer);
+      setTimeout(() => {
+        this.guardrailTimer = 0;
+      });
     }
 
+    if (this.health <= 0) {
+      _FOTL.currentState = _FOTL.states.spinout;
+      _FOTL.gameOverReason = "spun out against the guard rail";
+    }
 
     this.velocity.y = clamp(this.velocity.y, -2, 2);
     this.pos.y = clamp(this.pos.y, minVal, maxVal);
-    // if (y > maxVal) y = maxVal;
-    // else if (y <= minVal) y = minVal;
-//
-    // this.pos.x = clamp(
-      // this.pos.x,
-      // this.size.x / 2,
-      // levelSize.x - this.size.x / 2,
-    // );
-//
-    // this.pos.y = y;
 
     super.update();
   }
-}
 
+  decrementHealth() {
+    this.health--;
+  }
+}
