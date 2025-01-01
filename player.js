@@ -34,11 +34,13 @@ class Player extends EngineObject {
     this.mass = 0;
     this.setCollision();
     this.tileInfo = sprite.tileInfo;
+
+    this.mirror = true;
   }
 
-  // render() {
-    // drawTile(this.pos, this.size, this.tileInfo, this.color, this.angle, this.mirror, this.additiveColor);
-  // }
+  render() {
+    drawTile(this.pos, this.size, this.tileInfo, this.color, this.angle, this.mirror, this.additiveColor);
+  }
 
   update() {
     if (isPaused()) return;
@@ -58,7 +60,10 @@ class Player extends EngineObject {
 
       this.applyForce(vec2(0, 1 / 60));
       this.mass = 1;
-    } 
+      this.angle = PI/8;
+    } else {
+      this.angle = 0;
+    }
     const againstGuardrails = this.pos.y >= maxVal || this.pos.y <= minVal;
 
     if (againstGuardrails && !this.guardrailTimer) {
