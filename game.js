@@ -57,16 +57,15 @@ const levelSize = vec2(38, 20); // size of play area
 setCanvasFixedSize(vec2(1280, 720)); // use a 720p fixed size canvas
 setCameraPos(levelSize.scale(0.5)); // center camera in level
 
-function gameReset() {
+function gameReset(gameOver) {
   engineObjectsDestroy();
 
-  _FOTL.player = 0;
   _FOTL.player = new Player(levelSize);
   _FOTL.score = 0;
   _FOTL.currentState = _FOTL.states.running;
   _FOTL.currentlyPlaying = "";
 
-  _FOTL.uiManager.toggleGameOver();
+  _FOTL.uiManager.toggleGameOver(false);
 }
 ///////////////////////////////////////////////////////////////////////////////
 function gameInit() {

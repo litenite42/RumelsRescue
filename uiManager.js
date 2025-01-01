@@ -92,13 +92,15 @@ class uiManager {
     this.toggleVisibility('pause-screen');
   }
 
-  toggleGameOver() {
+  toggleGameOver(setGameState = true) {
     const gameOverScore = document.querySelector('#final-score'),
       gameOverReason = document.querySelector('#game-over-reason');
 
     gameOverScore.textContent = _FOTL.score;
     gameOverReason.textContent = _FOTL.gameOverReason;
-    _FOTL.currentState = _FOTL.states.gameOver;
+    if (setGameState) {
+      _FOTL.currentState = _FOTL.states.gameOver;
+    }
 
     this.toggleVisibility('game-over-screen');
   }
