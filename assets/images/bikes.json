@@ -1,0 +1,23 @@
+{
+  "sprites": [
+    {
+      "fileName": "spr_bike2man_0.png",
+      "width": 288,
+      "height": 222,
+      "x": 0,
+      "y": 0
+    },
+    {
+      "fileName": "spr_chopper_0.png",
+      "width": 240,
+      "height": 139,
+      "x": 312,
+      "y": 41
+    }
+  ],
+  "packMode": "grid",
+  "padding": 0,
+  "backgroundColor": "rgba(0, 0, 0, 0)",
+  "spriteSheetWidth": 576,
+  "spriteSheetHeight": 222
+}

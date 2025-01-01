@@ -46,6 +46,84 @@ const _FOTL = (() => {
   };
 })();
 
+const spriteSheets = {
+  base: 'assets/images/',
+  names: ['bikes'],
+  imageFormat: 'png'
+};
+// https://chasersgaming.itch.io/2d-vehicle-sprite-1-20
+//
+// https://www.finalparsec.com/tools/sprite_sheet_maker
+const bikesSpriteSheetData ={
+  "key": "bikes",
+  "sprites": [
+    {
+      "fileName": "spr_bike2man_0.png",
+      "width": 288,
+      "height": 222,
+      "x": 0,
+      "y": 0
+    },
+    {
+      "fileName": "spr_chopper_0.png",
+      "width": 240,
+      "height": 139,
+      "x": 312,
+      "y": 41
+    }
+  ],
+  "packMode": "grid",
+  "padding": 0,
+  "backgroundColor": "rgba(0, 0, 0, 0)",
+  "spriteSheetWidth": 576,
+  "spriteSheetHeight": 222
+};
+
+const spriteSheetData = [bikesSpriteSheetData];
+
+class Sprite {
+      fileName;
+      width;
+      height;
+      x;
+      y;
+      tileInfo;
+
+  constructor(configuration) {
+    const {fileName, width, height, x, y, index} = {...configuration};
+
+    this.fileName = fileName;
+    this.width = width;
+    this.height = height;
+    this.x = x;
+    this.y = y;
+
+    this.tileInfo = tile(vec2(x,y), vec2(width,height), index);
+  }
+}
+
+class SpriteSheet {
+  source;
+  sprites;
+
+  key;
+  index;
+  constructor(spriteData, key, source, index) {
+    this.source = source;
+    this.key = key;
+    this.index = index;
+
+    this.sprites = spriteData?.map((sprite) => {
+      const spriteSettings = {...sprite};
+      spriteSettings.index = index;
+
+      return new Sprite(spriteSettings);
+    });
+  }
+}
+
+
+
 function isPaused() {
   return [_FOTL.states.paused, _FOTL.states.menu, _FOTL.states.intro].includes(
     _FOTL.currentState,
@@ -57,10 +135,12 @@ const levelSize = vec2(38, 20); // size of play area
 setCanvasFixedSize(vec2(1280, 720)); // use a 720p fixed size canvas
 setCameraPos(levelSize.scale(0.5)); // center camera in level
 
-function gameReset(gameOver) {
+let gameSprites;
+let playerSprite;
+  function gameReset(gameOver) {
   engineObjectsDestroy();
 
-  _FOTL.player = new Player(levelSize);
+  _FOTL.player = new Player(levelSize,playerSprite);
   _FOTL.score = 0;
   _FOTL.currentState = _FOTL.states.running;
   _FOTL.currentlyPlaying = "";
@@ -75,6 +155,24 @@ function gameInit() {
 
   gravity = -0.008333;
   _FOTL.uiManager = new uiManager();
+
+  const bikeSettings = {
+    name: 'bikes',
+    sourceFormat: 'png',
+    atlasFormat: 'json'
+  };
+
+  gameSprites = (() => {
+  return spriteSheets?.names.map((sheetData, ndx, arr) => {
+    const specifiedSheet = spriteSheetData.filter(s => s.key == sheetData).shift();
+    return new SpriteSheet(specifiedSheet.sprites, sheetData, `${spriteSheets.base}${sheetData}.${spriteSheets.imageFormat}`, ndx);
+  });  
+})();
+
+const ndx = randInt(0,1);
+const choice = gameSprites.filter(g => g.key == 'bikes').shift();
+
+  playerSprite = choice?.sprites[ndx];
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -141,7 +239,7 @@ function gameUpdatePost() {
   }
 
   if (!_FOTL.player && _FOTL.uiManager.difficulty) {
-    _FOTL.player = new Player(levelSize);
+    _FOTL.player = new Player(levelSize, playerSprite);
   }
 
   if (_FOTL.currentState !== _FOTL.states.running) return;
@@ -229,6 +327,9 @@ function gameRenderPost() {
   }
 }
 
+const configuredSprites = 
+  spriteSheets.names?.map(s => `${spriteSheets.base}${s}.${spriteSheets.imageFormat}`) ?? [];
+
 ///////////////////////////////////////////////////////////////////////////////
 // Startup LittleJS Engine
 engineInit(
@@ -237,5 +338,5 @@ engineInit(
   gameUpdatePost,
   gameRender,
   gameRenderPost,
-  [],
-);
+  configuredSprites
+  );

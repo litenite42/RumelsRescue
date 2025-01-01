@@ -2,7 +2,7 @@ class Player extends EngineObject {
   health;
   guardrailTimer;
 
-  constructor(sizeOfLevel) {
+  constructor(sizeOfLevel, sprite) {
     super();
 
     this.health = 3;
@@ -33,7 +33,12 @@ class Player extends EngineObject {
     this.gravityScale = 1;
     this.mass = 0;
     this.setCollision();
+    this.tileInfo = sprite.tileInfo;
   }
+
+  // render() {
+    // drawTile(this.pos, this.size, this.tileInfo, this.color, this.angle, this.mirror, this.additiveColor);
+  // }
 
   update() {
     if (isPaused()) return;

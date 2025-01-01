@@ -25,7 +25,6 @@ class Vehicle extends EngineObject
     }
 
     update() {
-
       if (isPaused()) return;
       this.pos.x += this.velocity.x;
 
