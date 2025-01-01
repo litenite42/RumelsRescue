@@ -51,17 +51,19 @@ class Player extends EngineObject {
     if (playerMoved) {
       _FOTL.lastPlayerActivityFrame = frame;
 
-      _FOTL.player.applyForce(vec2(0, 1 / 60));
+      this.applyForce(vec2(0, 1 / 60));
       this.mass = 1;
     } 
+    const againstGuardrails = this.pos.y >= maxVal || this.pos.y <= minVal;
 
-    if ((this.pos.y >= maxVal || this.pos.y <= minVal) && !this.guardrailTimer) {
-      this.guardrailTimer = setTimeout(() => { this.decrementHealth() }, 5400);
-    } else {
-     this.guardrailTimer && clearTimeout(this.guardrailTimer);
-      setTimeout(() => {
-        this.guardrailTimer = 0;
-      });
+    if (againstGuardrails && !this.guardrailTimer) {
+      this.guardrailTimer = new Timer(5.4);
+    } else if (againstGuardrails && this.guardrailTimer && this.guardrailTimer.elapsed()) {
+      this.health--; 
+      this.guardrailTimer = undefined;
+    } else if (!againstGuardrails && this.guardrailTimer && this.guardrailTimer.active()) {
+      this.guardrailTimer.unset();
+      this.guardrailTimer = undefined;
     }
 
     if (this.health <= 0) {
