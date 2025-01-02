@@ -1,11 +1,14 @@
 class Vehicle extends EngineObject 
 {
-    constructor(minVelocity, maxVelocity, lane)
+    tileInfo;
+
+    constructor(minVelocity, maxVelocity, lane, tileInfo)
     {
         super(); // set object position
 
-        const width = randInt(10, 22);
-        const height = randInt(2, 4);
+        const width = randInt(6, 8);
+        const height = 4
+
 
         this.velocity = vec2(rand(minVelocity, maxVelocity), 0);
 
@@ -16,6 +19,7 @@ class Vehicle extends EngineObject
         this.setCollision();
 
         this.mass = 0;
+        this.tileInfo = tileInfo;
     }
   
     collideWithObject(obj) {
@@ -23,6 +27,10 @@ class Vehicle extends EngineObject
       _FOTL.currentState = _FOTL.states.gameOver;
       _FOTL.gameOverReason = 'Crashed';
     }
+
+  render() {
+    drawTile(this.pos, this.size, this.tileInfo, this.color, this.angle, this.mirror, this.additiveColor);
+  }
 
     update() {
       if (isPaused()) return;
@@ -38,7 +46,8 @@ class Vehicle extends EngineObject
 
 class EasyVehicle extends Vehicle {
   constructor(lane) {
-    super(.03, .05, lane);
+    const sprite = chooseSprite('easy');
+    super(.03, .05, lane, sprite);
   }
 }
 

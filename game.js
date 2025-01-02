@@ -48,7 +48,7 @@ const _FOTL = (() => {
 
 const spriteSheets = {
   base: 'assets/images/',
-  names: ['bikes'],
+  names: ['bikes', 'easy'],
   imageFormat: 'png'
 };
 // https://chasersgaming.itch.io/2d-vehicle-sprite-1-20
@@ -79,7 +79,54 @@ const bikesSpriteSheetData ={
   "spriteSheetHeight": 222
 };
 
-const spriteSheetData = [bikesSpriteSheetData];
+const easySpriteSheetData = {
+  "key" : "easy",
+
+  "sprites": [
+    {
+      "fileName": "spr_bubblecar_0.png",
+      "width": 288,
+      "height": 147,
+      "x": 3,
+      "y": 22
+    },
+    {
+      "fileName": "spr_camper_0.png",
+      "width": 288,
+      "height": 144,
+      "x": 297,
+      "y": 24
+    },
+    {
+      "fileName": "spr_estatecar_0.png",
+      "width": 294,
+      "height": 144,
+      "x": 588,
+      "y": 24
+    },
+    {
+      "fileName": "spr_silvercar_0.png",
+      "width": 288,
+      "height": 192,
+      "x": 3,
+      "y": 192
+    },
+    {
+      "fileName": "spr_van_0.png",
+      "width": 288,
+      "height": 153,
+      "x": 297,
+      "y": 211
+    }
+  ],
+  "packMode": "grid",
+  "padding": 0,
+  "backgroundColor": "rgba(0, 0, 0, 0)",
+  "spriteSheetWidth": 882,
+  "spriteSheetHeight": 384
+};
+
+const spriteSheetData = [bikesSpriteSheetData, easySpriteSheetData];
 
 class Sprite {
       fileName;
@@ -137,6 +184,15 @@ setCameraPos(levelSize.scale(0.5)); // center camera in level
 
 let gameSprites;
 let playerSprite;
+
+function chooseSprite(key) {
+    const keySprites = gameSprites.filter(x => x.key === 'easy').shift();
+    const spriteNdx = randInt(keySprites.sprites.length);
+    const sprite = keySprites?.sprites[spriteNdx];
+
+    return sprite.tileInfo;
+}
+
   function gameReset(gameOver) {
   engineObjectsDestroy();
 

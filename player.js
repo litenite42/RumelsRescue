@@ -27,7 +27,7 @@ class Player extends EngineObject {
     const initX = randInt(region[0], region[1]);
 
     this.pos = vec2(initX, initY);
-    this.size = vec2(2, 1);
+    this.size = vec2(4, 2);
     this.color = new Color().setHex("#bbbbbb");
 
     this.gravityScale = 1;
