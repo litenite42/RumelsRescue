@@ -1,0 +1,23 @@
+{
+  "sprites": [
+    {
+      "fileName": "spr_classiccar_0.png",
+      "width": 288,
+      "height": 105,
+      "x": 0,
+      "y": 0
+    },
+    {
+      "fileName": "spr_rally_0.png",
+      "width": 288,
+      "height": 135,
+      "x": 288,
+      "y": 0
+    }
+  ],
+  "packMode": "horizontal",
+  "padding": 0,
+  "backgroundColor": "rgba(0, 0, 0, 0)",
+  "spriteSheetWidth": 576,
+  "spriteSheetHeight": 135
+}

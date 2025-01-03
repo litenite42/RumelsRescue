@@ -49,7 +49,7 @@ const _FOTL = (() => {
 
 const spriteSheets = {
   base: 'assets/images/',
-  names: ['player', 'easy'],
+  names: ['player', 'easy', 'medium', 'hard', 'falling'],
   imageFormat: 'png'
 };
 // https://chasersgaming.itch.io/2d-vehicle-sprite-1-20
@@ -119,7 +119,71 @@ const easySpriteSheetData = {
   "spriteSheetHeight": 126
 };
 
-const spriteSheetData = [bikesSpriteSheetData, easySpriteSheetData];
+const mediumSpriteSheetData =  {
+  "key": "medium",
+"sprites": [
+    {
+      "fileName": "spr_classiccar_0.png",
+      "width": 288,
+      "height": 135,
+      "x": 0,
+      "y": 0
+    },
+    {
+      "fileName": "spr_rally_0.png",
+      "width": 288,
+      "height": 135,
+      "x": 288,
+      "y": 0
+    }
+  ],
+  "packMode": "horizontal",
+  "padding": 0,
+  "backgroundColor": "rgba(0, 0, 0, 0)",
+  "spriteSheetWidth": 576,
+  "spriteSheetHeight": 135
+
+}
+
+
+const hardSpriteSheetData =  {
+  "key": "hard",
+"sprites": [
+    {
+      "fileName": "spr_car4_0.png",
+      "width": 288,
+      "height": 123,
+      "x": 0,
+      "y": 0
+    }
+  ],
+  "packMode": "horizontal",
+  "padding": 0,
+  "backgroundColor": "rgba(0, 0, 0, 0)",
+  "spriteSheetWidth": 288,
+  "spriteSheetHeight": 123
+
+}
+
+const fallingSpriteSheetData = {
+  "key": "falling",
+"sprites": [
+    {
+      "fileName": "spr_camper_0.png",
+      "width": 288,
+      "height": 144,
+      "x": 0,
+      "y": 0
+    }
+  ],
+  "packMode": "horizontal",
+  "padding": 0,
+  "backgroundColor": "rgba(0, 0, 0, 0)",
+  "spriteSheetWidth": 288,
+  "spriteSheetHeight": 144
+}
+
+const spriteSheetData = [bikesSpriteSheetData, easySpriteSheetData,mediumSpriteSheetData,hardSpriteSheetData,fallingSpriteSheetData ];
 
 class Sprite {
       fileName;

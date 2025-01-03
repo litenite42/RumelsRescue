@@ -6,7 +6,7 @@ class Vehicle extends EngineObject
     {
         super(); // set object position
 
-        const width = randInt(3, 5);
+        const width = 5;
         const height = 2
 
         this.velocity = vec2(rand(minVelocity, maxVelocity), 0);
@@ -45,7 +45,7 @@ class Vehicle extends EngineObject
 
 class EasyVehicle extends Vehicle {
   constructor(lane) {
-    const sprite = gameSprites.filter(x => x.key === 'easy').shift().sprites[1].tileInfo;//chooseSprite('easy');
+    const sprite = gameSprites.filter(x => x.key === 'easy').shift().sprites[0].tileInfo;//chooseSprite('easy');
     // const sprite = chooseSprite('easy');
     super(.03, .05, lane, sprite);
   }
@@ -53,19 +53,22 @@ class EasyVehicle extends Vehicle {
 
 class MediumVehicle extends Vehicle {
   constructor(lane) {
-    super(.05, .08, lane);
+    const sprite = gameSprites.filter(x => x.key === 'medium').shift().sprites[0].tileInfo;//chooseSprite('easy');
+    super(.05, .08, lane, sprite);
   }
 }
 
 class HardVehicle extends Vehicle {
   constructor(lane) {
-    super(.08, .1, lane);
+    const sprite = gameSprites.filter(x => x.key === 'hard').shift().sprites[0].tileInfo;//chooseSprite('easy');
+    super(.12, .15, lane,sprite);
   }
 }
 
 class FallingVehicle extends Vehicle {
   constructor(lane) {
-    super(.04, .07, 19);
+    const sprite = gameSprites.filter(x => x.key === 'falling').shift().sprites[0].tileInfo;//chooseSprite('easy');
+    super(.04, .07, 19,sprite);
 
     this.mass = rand(.1, .6);
     this.gravityScale = .05;
