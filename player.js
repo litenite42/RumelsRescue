@@ -33,7 +33,18 @@ class Player extends EngineObject {
     this.gravityScale = 1;
     this.mass = 0;
     this.setCollision();
-    this.tileInfo = sprite.tileInfo;
+    if (!sprite) { 
+// const ndx = randInt(0,1);
+// const choice = gameSprites.filter(g => g.key == 'bikes').shift();
+//
+  // sprite = choice?.sprites[ndx];
+      sprite = chooseSprite('player');
+    }
+    this.tileInfo = sprite;
+    
+    this.mass = 1;
+    // apply an initial upwards (rightwards) force to start player off
+    this.applyForce(vec2(0, rand(.3, .5)));
 
     this.mirror = true;
   }

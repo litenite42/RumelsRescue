@@ -13,6 +13,7 @@ const _FOTL = (() => {
     white: new Color().setHex("#ffffff"),
   };
 
+
   const states = {
     menu: 0,
     intro: 10,
@@ -48,82 +49,74 @@ const _FOTL = (() => {
 
 const spriteSheets = {
   base: 'assets/images/',
-  names: ['bikes', 'easy'],
+  names: ['player', 'easy'],
   imageFormat: 'png'
 };
 // https://chasersgaming.itch.io/2d-vehicle-sprite-1-20
 //
 // https://www.finalparsec.com/tools/sprite_sheet_maker
 const bikesSpriteSheetData ={
-  "key": "bikes",
+  "key": "player",
   "sprites": [
     {
-      "fileName": "spr_bike2man_0.png",
-      "width": 288,
-      "height": 222,
+      "fileName": "ln_bike1.png",
+      "width": 225,
+      "height": 188,
       "x": 0,
       "y": 0
     },
     {
       "fileName": "spr_chopper_0.png",
       "width": 240,
-      "height": 139,
-      "x": 312,
-      "y": 41
+      "height": 159,
+      "x": 225,
+      "y":0 
     }
   ],
   "packMode": "grid",
   "padding": 0,
   "backgroundColor": "rgba(0, 0, 0, 0)",
-  "spriteSheetWidth": 576,
-  "spriteSheetHeight": 222
+  "spriteSheetWidth": 480,
+  "spriteSheetHeight": 188
 };
 
 const easySpriteSheetData = {
   "key" : "easy",
-
   "sprites": [
     {
-      "fileName": "spr_bubblecar_0.png",
-      "width": 288,
-      "height": 147,
-      "x": 3,
-      "y": 22
+      "fileName": "ln_easy1.png",
+      "width": 279,
+      "height": 108,
+      "x": 0,
+      "y": 0
     },
     {
-      "fileName": "spr_camper_0.png",
-      "width": 288,
-      "height": 144,
-      "x": 297,
-      "y": 24
+      "fileName": "ln_easy2.png",
+      "width": 252,
+      "height": 82,
+      "x": 289,//519,
+      "y": 0
     },
     {
-      "fileName": "spr_estatecar_0.png",
-      "width": 294,
-      "height": 144,
-      "x": 588,
-      "y": 24
+      "fileName": "ln_easy3.png",
+      "width": 276,
+      "height": 126,
+      "x": 631,
+      "y": 0
     },
     {
-      "fileName": "spr_silvercar_0.png",
-      "width": 288,
-      "height": 192,
-      "x": 3,
-      "y": 192
-    },
-    {
-      "fileName": "spr_van_0.png",
-      "width": 288,
-      "height": 153,
-      "x": 297,
-      "y": 211
+      "fileName": "ln_easy4.png",
+      "width": 268,
+      "height": 100,
+      "x": 907,
+      "y": 0
     }
   ],
-  "packMode": "grid",
+  "packMode": "horizontal",
   "padding": 0,
   "backgroundColor": "rgba(0, 0, 0, 0)",
-  "spriteSheetWidth": 882,
-  "spriteSheetHeight": 384
+  "spriteSheetWidth": 1075,
+  "spriteSheetHeight": 126
 };
 
 const spriteSheetData = [bikesSpriteSheetData, easySpriteSheetData];
@@ -186,7 +179,7 @@ let gameSprites;
 let playerSprite;
 
 function chooseSprite(key) {
-    const keySprites = gameSprites.filter(x => x.key === 'easy').shift();
+    const keySprites = gameSprites.filter(x => x.key === key).shift();
     const spriteNdx = randInt(keySprites.sprites.length);
     const sprite = keySprites?.sprites[spriteNdx];
 
@@ -201,7 +194,8 @@ function chooseSprite(key) {
   _FOTL.currentState = _FOTL.states.running;
   _FOTL.currentlyPlaying = "";
 
-  _FOTL.uiManager.toggleGameOver(false);
+    if (_FOTL.uiManager.visible)
+      _FOTL.uiManager.toggleGameOver(false);
 }
 ///////////////////////////////////////////////////////////////////////////////
 function gameInit() {
@@ -224,11 +218,6 @@ function gameInit() {
     return new SpriteSheet(specifiedSheet.sprites, sheetData, `${spriteSheets.base}${sheetData}.${spriteSheets.imageFormat}`, ndx);
   });  
 })();
-
-const ndx = randInt(0,1);
-const choice = gameSprites.filter(g => g.key == 'bikes').shift();
-
-  playerSprite = choice?.sprites[ndx];
 }
 
 ///////////////////////////////////////////////////////////////////////////////

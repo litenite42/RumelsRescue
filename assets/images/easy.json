@@ -1,44 +1,37 @@
 {
   "sprites": [
     {
-      "fileName": "spr_bubblecar_0.png",
-      "width": 288,
-      "height": 147,
-      "x": 3,
-      "y": 22
+      "fileName": "ln_easy1.png",
+      "width": 279,
+      "height": 108,
+      "x": 0,
+      "y": 0
     },
     {
-      "fileName": "spr_camper_0.png",
-      "width": 288,
-      "height": 144,
-      "x": 297,
-      "y": 24
+      "fileName": "ln_easy2.png",
+      "width": 252,
+      "height": 82,
+      "x": 279,
+      "y": 0
     },
     {
-      "fileName": "spr_estatecar_0.png",
-      "width": 294,
-      "height": 144,
-      "x": 588,
-      "y": 24
+      "fileName": "ln_easy3.png",
+      "width": 276,
+      "height": 126,
+      "x": 531,
+      "y": 0
     },
     {
-      "fileName": "spr_silvercar_0.png",
-      "width": 288,
-      "height": 192,
-      "x": 3,
-      "y": 192
-    },
-    {
-      "fileName": "spr_van_0.png",
-      "width": 288,
-      "height": 153,
-      "x": 297,
-      "y": 211
+      "fileName": "ln_easy4.png",
+      "width": 268,
+      "height": 100,
+      "x": 807,
+      "y": 0
     }
   ],
-  "packMode": "grid",
+  "packMode": "horizontal",
   "padding": 0,
   "backgroundColor": "rgba(0, 0, 0, 0)",
-  "spriteSheetWidth": 882,
-  "spriteSheetHeight": 384
+  "spriteSheetWidth": 1075,
+  "spriteSheetHeight": 126
 }
