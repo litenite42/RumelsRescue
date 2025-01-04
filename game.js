@@ -1,9 +1,3 @@
-/*
-    Little JS Hello World Demo
-    - Just prints "Hello World!"
-    - A good starting point for new projects
-*/
-
 "use strict";
 
 const _FOTL = (() => {
@@ -43,7 +37,7 @@ const _FOTL = (() => {
     currentDifficulty: difficulties.easy,
     lastPlayerActivityFrame: -1,
     currentlyPlaying: "",
-    music: music,
+    music: music
   };
 })();
 
@@ -144,7 +138,6 @@ const mediumSpriteSheetData =  {
   "spriteSheetHeight": 135
 
 }
-
 
 const hardSpriteSheetData =  {
   "key": "hard",
@@ -369,6 +362,22 @@ function gameUpdatePost() {
   _FOTL.vehicleFactory.New();
 }
 
+function drawLane(height, thickness, color) {
+  const sectionLength = 38/10;
+
+  for (let section = -1; section < 10; section++) {
+    const multi = (frame % 16) * (sectionLength / 32)
+    const addon = (_FOTL.currentState === _FOTL.states.running) ? multi : 0;
+    const placement = section + addon;
+
+    const sectionStart = vec2(placement * sectionLength, height);
+    const sectionEnd = vec2((placement + 1) * sectionLength, height);
+
+    const useColor = section % 2 && frame % 2 ? color : GRAY;
+    drawLine(sectionStart, sectionEnd, thickness, useColor);
+  }
+}
+
 ///////////////////////////////////////////////////////////////////////////
 function gameRender() {
   // called before objects are rendered
@@ -377,10 +386,14 @@ function gameRender() {
   let y = (-1 * mainCanvasSize.y) / 2;
 
   drawRect(cameraPos, mainCanvasSize.scale(0.8), _FOTL.bgColor);
-  drawRect(cameraPos, vec2(mainCanvasSize.x, 19), _FOTL.palette.white);
+  drawRect(cameraPos, vec2(mainCanvasSize.x, 20), GRAY);
 
-  drawLine(vec2(0, 19.5), vec2(38, 19.5), 0.1, new Color().setHex("#AAAAAA"));
-  drawLine(vec2(0, 0), vec2(38, 0), 0.1, new Color().setHex("#AAAAAA"));
+  drawLine(vec2(-1, 20), vec2(40, 20), 0.5, new Color().setHex("#AAAAAA"));
+  drawLine(vec2(-1, 0), vec2(40, 0), 0.5, new Color().setHex("#AAAAAA"));
+
+  for (let currLane = 5; currLane < 19; currLane += 5) {
+    drawLane(currLane, 0.1, WHITE);
+  }
 
   if (debug) {
     drawLine(vec2(0, 24.5), vec2(38, 24.5), 0.1, new Color().setHex("#000000"));
